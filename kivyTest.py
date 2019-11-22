@@ -70,16 +70,16 @@ class WidgetApp(BoxLayout):
             # print(day)
             self.getSchedule(timeTemp)
             self.getLecture()
-        except Exception as e:
-            print(e)
+        except:
+            print("No class found")
                 
             
         
     def returnQuery(self,lecture):
         # dictionary = {"LUNCH:":"LUNCH","BREAK":"BREAK","NaN":"BREAK","PYTHON":"PYTHON","SE":"SOFTWARE ENGINEERING","CN":"COMPUTER NETWORKS","IOT":"INTERNET OF THINGS","ADA":"ADA","ADA LAB":"ADA LAB","IOT / CN LAB":"IOT / CN LAB"}
         engine = pyttsx3.init()
-        if lecture is None:
-            lecture="Nothing"
+        if lecture is None or self.day is None or self.schedule is None:
+            lecture="Please repeat" #change
         engine.say(lecture)
         engine.setProperty('rate',120)  #120 words per minute
         engine.setProperty('volume',0.9) 
@@ -99,9 +99,6 @@ class WidgetApp(BoxLayout):
                     text="".join(lst)   
             else:
                 text= query   
-
-            print(int(text))
-
         
             
             if int(text) in (range(810,855) or range(81,90)) or "8" == text:
@@ -110,7 +107,6 @@ class WidgetApp(BoxLayout):
                 self.schedule = 2
             elif int(text) in (range(950,1045) or range(101,110)) or "10" == text:
                 self.schedule = 3
-                # print("IN")
             elif int(text) in (range(1045,1115) or range(111,120)) or "11" == text:
                 self.schedule = 4
             elif int(text) in (range(1115,1210) or range(121,130)) or "12" == text:
@@ -121,7 +117,6 @@ class WidgetApp(BoxLayout):
                 self.schedule = 7
             elif int(text) in (range(210,255) or range(21,30)) or "2" == text:
                self.schedule = 8
-               print("IN")
             elif int(text) in (range(255,350) or range(31,40)) or "3" == text:
                 self.schedule = 9
             else:

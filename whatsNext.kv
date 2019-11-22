@@ -2,12 +2,15 @@
     FloatLayout:
         Button:
             text:
+            opacity: .75
             markup:True
             background_normal: 'whatsNext.png'
             size_hint_x : .40
             size_hint_y : .40
             pos_hint:{'x': .25, 'center_y': .70}
+            
             on_press: root.whats_next()
+            
             
         
         Button:
@@ -15,6 +18,7 @@
             background_normal: 'voice.png'
             size_hint_x : .30
             size_hint_y :.30
+            opacity: .75
             pos_hint:{'x': .60, 'center_y': .35}
             on_press: root.voice()
         
