@@ -1,5 +1,7 @@
 <WidgetApp>
+
     FloatLayout:
+        label_widget: label_widget
         Button:
             text:
             opacity: .75
@@ -8,9 +10,7 @@
             size_hint_x : .40
             size_hint_y : .40
             pos_hint:{'x': .25, 'center_y': .70}
-            
-            on_press: root.whats_next()
-            
+            on_press: root.whats_next()            
             
         
         Button:
@@ -21,5 +21,14 @@
             opacity: .75
             pos_hint:{'x': .60, 'center_y': .35}
             on_press: root.voice()
-        
+
+        Label:
+            id: label_widget
+            text: ""
+            pos_hint:{'x': 0.075, 'center_y': .10}
+            color: 0,0,0,.9
+            opacity: .75
+            
+
+
         

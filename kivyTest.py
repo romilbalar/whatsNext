@@ -7,6 +7,7 @@ import pyttsx3
 import pandas
 from kivy.uix.boxlayout import BoxLayout
 from kivy.config import Config
+from kivy.properties import ObjectProperty
 Config.set('graphics', 'width', '350')
 Config.set('graphics', 'height', '350')
 from kivy.core.window import Window
@@ -14,7 +15,7 @@ Window.clearcolor = (1, 1, 1, 1)
 
 r=sr.Recognizer()
 class WidgetApp(BoxLayout):
-   
+    label_widget= ObjectProperty(None)
     def whats_next(self):
         # playsound("whatsNext.mp3")
         from datetime import date
@@ -33,7 +34,8 @@ class WidgetApp(BoxLayout):
         # time="".join(lst)
 
         self.getSchedule(time)
-        self.schedule=str(int(self.schedule) + 1)
+        if self.schedule.isnumeric():
+            self.schedule=str(int(self.schedule) + 1)
         self.getLecture()       
 
 
@@ -72,18 +74,29 @@ class WidgetApp(BoxLayout):
             self.getLecture()
         except:
             print("No class found")
+            self.ids.label_widget.text ="No class found"
+            engine = pyttsx3.init()
+            engine.say("No class Found")
+            engine.setProperty('rate',120)  #120 words per minute
+            engine.setProperty('volume',0.9) 
+            engine.runAndWait()
                 
             
         
     def returnQuery(self,lecture):
         # dictionary = {"LUNCH:":"LUNCH","BREAK":"BREAK","NaN":"BREAK","PYTHON":"PYTHON","SE":"SOFTWARE ENGINEERING","CN":"COMPUTER NETWORKS","IOT":"INTERNET OF THINGS","ADA":"ADA","ADA LAB":"ADA LAB","IOT / CN LAB":"IOT / CN LAB"}
-        engine = pyttsx3.init()
+        
         if lecture is None or self.day is None or self.schedule is None:
             lecture="Please repeat" #change
+        if not lecture[0]:
+            lecture[0] = "No class"
+        self.ids.label_widget.text =str(lecture[0])
+        engine = pyttsx3.init()
         engine.say(lecture)
         engine.setProperty('rate',120)  #120 words per minute
         engine.setProperty('volume',0.9) 
         engine.runAndWait()
+        # self.ids.label_widget.text = ""
 
     def getSchedule(self,query):
             
@@ -130,6 +143,7 @@ class WidgetApp(BoxLayout):
         if self.day is None or self.schedule is None:
             print("Day or schedule not mentioned")
             return
+        print(self.schedule) #ASDASDAs
         query = "SELECT Schedule"+self.schedule+" from TimeTable WHERE Day = "+self.day+";"
         lecture = cur.execute(query)
         lecture= lecture.fetchall()
@@ -157,7 +171,8 @@ for i in range(6):
     cur.execute("INSERT INTO TimeTable VALUES(?,?,?,?,?,?,?,?,?,?)",[i,ls[0][i],ls[1][i],ls[2][i],ls[3][i],ls[4][i],ls[5][i],ls[6][i],ls[7][i],ls[8][i]])
 
 # i=cur.execute("select * from timeTable")
-# print(i.fetchall())
+# for row in i.fetchall():
+#     print(row)
 
 
 
